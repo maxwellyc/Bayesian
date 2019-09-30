@@ -47,14 +47,14 @@ mtN = ["","SkM*","SkP","SLy4","SV-min","UNEDF0","UNEDF1","DD-ME2","DD-ME$\delta$
 def data_import(low_lim = -100000):
  # function that detects if arg. is a number
 
- #Atomic mass unit from Wikipedia
+ # Atomic mass unit from Wikipedia
  # Note that FRDM2012 uses 1u = 931.5014MeV
  uAtomic = 931.49        # MeV rounded to 2 decimals
  uAtomic0 = 931494.0954  # keV
- #uAtomic0 = 931494.061 # Erik's uAtomic, keV
+ # uAtomic0 = 931494.061 # Erik's uAtomic, keV
 
- #Hydrogen atom and neutron masses From AME 2012, which HFB-24 was fitted to
- #data before 2/13/19 were computed by these values
+ # Hydrogen atom and neutron masses From AME 2012, which HFB-24 was fitted to
+ # data before 2/13/19 were computed by these values
  M_P0 = 1.0078250322 * uAtomic0  #938.783 MeV
  M_N0 = 1.0086649158 * uAtomic0  #939.565 MeV
  M_P = 938.78  # MeV rounded to 2 decimals  # used M_P = 938.27 before 2/13/19 incorrectly
@@ -1923,6 +1923,7 @@ def write_output(saveNum=0, odevity=0, tFormat='csv'):
   output.write(outputLabel)
 
   points = {}
+  zMax1 = 120; nMax1 = 300
   for i in range(1,20):
     points[(mtN[i])] = 0
 
@@ -2040,5 +2041,5 @@ def qa_filter_nuclei():
 # uncomment to output csv file of separation energies
 #exec_list = [(1,1),(1,3),(2,0),(2,2),(3,2),(3,3),(4,0),(4,1)]
 #for (arg1,arg2) in exec_list: write_output(arg1,arg2,"csv")
-#write_output( saveNum = 0, odevity = 0, tFormat = "csv")
+write_output( saveNum = 4, odevity = 0, tFormat = "csv")
 twoProton_weight_nuclei()

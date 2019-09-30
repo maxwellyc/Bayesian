@@ -40,7 +40,7 @@ def residues(saveNum, odevity, tFormat):
  uAtomic = 931.49        # MeV rounded to 2 decimals
  uAtomic0 = 931494.0954  # keV
  #uAtomic0 = 931494.061 # Erik's uAtomic, keV
- 
+
  #Hydrogen atom and neutron masses From AME 2012, which HFB-24 was fitted to
  #data before 2/13/19 were computed by these values
  M_P0 = 1.0078250322 * uAtomic0  #938.783 MeV
@@ -73,7 +73,7 @@ def residues(saveNum, odevity, tFormat):
  ### ARE EXTRAPOLATED WITH INCORRECT PAIRING GAPS, DO NOT USE ODD DATA FROM RMF MASSTABLES!!!    ###
  ### 2017.DEC.2                                                                                  ###
  ###################################################################################################
- 
+
  ###################################################################################################
  ###                                    1. DEFINE FILE PATHS                                     ###
  ###################################################################################################
@@ -88,37 +88,37 @@ def residues(saveNum, odevity, tFormat):
  #f16 = open(dir+"UNEDF2_octupole_separation.dat") # testing octupole residule data
  #column indices of Z, N, S2n, S2p, S1n, S1p, binding energy. ME stands for MassExplorer
  aME = [1,2,8,6,7,5,4]
- 
+
  # 2019 HFBTHO octupole mass-tables:
- dir2 = "data/octupole_2019/"; tail2 = "_binding_beta2_3_filtered.dat"
+ dir2 = "data/octupole_2019/unrefined/"; tail2 = "_binding_beta2_3_filtered.dat"
  f23 = open(dir2+"SKMS"+tail2); f24 = open(dir2+"SKP"+tail2); f25 = open(dir2+"SLY4"+tail2)
  f26 = open(dir2+"SV-MIN"+tail2); f27 = open(dir2+"UNEDF0"+tail2)
  f28 = open(dir2+"UNEDF1"+tail2); f29 = open(dir2+"UNEDF2"+tail2)
  #column indices of Z, N, binding energy, beta2_out, beta3_out, OCT stands for octupole
  aOCT = [0,1,3,4,5]
- 
- 
+
+
  #RMF masstables, !!!DO NOT USE ODD DATA!!! CONTAINED IN RMF masstables
  #THESE ODD DATA ARE CALCULATED WITH WRONG PAIRING GAPS, ONLY USE EVEN S2N, S2P DATA
  f7 = open("data/ddme2-sep.dat"); f8 = open("data/ddmed-sep.dat")
  f9 = open("data/ddpc1-sep.dat"); f10 = open("data/nl3s-sep.dat")
  #column indices of Z, N, S2n, S2p. RMF stands for Relativistic Mean Field
  aRMF = [0,1,6,4]
- 
+
  #additional data, as requested by collaborators:
  f14 = open("data/FRDM2012.dat"); f15 = open("data/hfb24.dat")
  #colum indices of Z, N, Binding energy for FRDM-2012
  aFRDM = [0,1,13]
  #colum indices of Z, A, Mass excess, S1n, S1p for HFB-24
  aHFB24 = [0,1,9,6,7]
- 
+
  #2003 & 2016 AME separation energies
  f11 = open("data/2003AME_S2.dat"); f12 = open("data/2016AME_S2.dat")
  f17= open("data/2003AME_S1.dat"); f18 = open("data/2016AME_S1.dat")
  #AME stands for Atomic Mass Evaluation, this aAME is good for both *_S2 file and *_S1 file
  #column indices of Z, N, S2n/S1n, S2n/S1n errors, S2p/S1p, S2p/S1p errors (error data only exists for AME)
  aAME = [0,1,2,3,4,5]
- 
+
  #2016 AME mass excess raw input
  #Z,N, mass excess, mass excess error
  f22 = open("data/2016AME_ME.dat")
@@ -137,7 +137,7 @@ def residues(saveNum, odevity, tFormat):
  f21 = open("data/new_other.dat")
  #column indices of Z, N, mass excess(keV), mass excess error(keV)
  aJYFL = [0,1,4,5]; a2018 = [0,1,2,3]
- 
+
  l = {}
  # Skyrme masstables
  l[1] = f1.readlines(); l[2] = f2.readlines(); l[3] = f3.readlines(); l[4] = f4.readlines()
@@ -155,7 +155,7 @@ def residues(saveNum, odevity, tFormat):
  # 2019 Octupole tables:
  l[23] = f23.readlines(); l[24] = f24.readlines(); l[25] = f25.readlines(); l[26] = f26.readlines();
  l[27] = f27.readlines(); l[28] = f28.readlines(); l[29] = f29.readlines()
- 
+
  f1.close(); f2.close(); f3.close(); f4.close(); f5.close(); f6.close(); f7.close(); f8.close()
  f9.close(); f10.close(); f11.close(); f12.close(); f13.close(); f14.close(); f15.close()
  f16.close(); f17.close(); f18.close(); f19.close(); f20.close(); f21.close(); f22.close()
@@ -182,7 +182,7 @@ def residues(saveNum, odevity, tFormat):
  #!! 19-TRIUMF2018, 20-RIKEN2018, 21-NEW_OTHER, 22-AME2016_MassExcess                            !!#
  #!!                                                                                             !!#
  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
- 
+
  ###################################################################################################
  ###                                  2. READ IN DATA FROM FILE                                  ###
  ###################################################################################################
@@ -226,7 +226,7 @@ def residues(saveNum, odevity, tFormat):
       BE[(N,Z,i)] = float(data)
     except (ValueError, IndexError):        #N,Z, or, S2n/S2p are not numbers
        continue
-       
+
 # Find abnormal S2n values
 # for i in it.chain(range(1,7), range(16,17)):
 #  for Z in range(2,zMax1,2):
@@ -504,7 +504,7 @@ def residues(saveNum, odevity, tFormat):
      elif (N+2,Z,12) in BE and (N+2,Z,i) not in BE: #2016
       S2n[(N+2,Z,i)] = -1.0 * round( BE[(N+2,Z,12)] - BE[(N,Z,i)], 6)
       S2nErr[(N+2,Z,i)] = round(math.sqrt(BEErr[(N+2,Z,12)]**2.0 + BEErr[(N,Z,i)]**2.0), 6)
-     
+
      ### PROTON SEPARATION ###
      ## S1p of up and down, if mass of neighboring nuclei not in new dataset, check AME2016
      if (N,Z-1,i) in BE:
@@ -913,11 +913,11 @@ def residues(saveNum, odevity, tFormat):
        ResC[(Z,i,j,7,1)].extend([BE[(N,Z,i)]])
 
  #(neutron #; theory masstable index; experiment dat index; data type 0: S2n, 1: S2p; 0: neutron sequence, 1: residue sequence)
- 
+
  ### All Isotonic Chain Goes Here ###
  ### All Isotonic Chain Goes Here ###
  ### All Isotonic Chain Goes Here ###
- 
+
  #Data storage for residual of S2p vs Proton # plot
  # model 1~6, 14~16, 23~29 ; exp 12
  for i in it.chain(range(1,7), range(14,17), range(23,30)):
@@ -935,11 +935,11 @@ def residues(saveNum, odevity, tFormat):
       if (N,Z,i) in S2p:
        ResC[(N,i,j,6,0)].extend([Z])
        ResC[(N,i,j,6,1)].extend([S2p[(N,Z,i)]])
-       
+
  ### All Isobaric Chain Goes Here ###
  ### All Isobaric Chain Goes Here ###
  ### All Isobaric Chain Goes Here ###
- 
+
 
  ###################################################################################################
  ###                                     4.0. PLOT OPTIONS                                       ###
@@ -959,7 +959,7 @@ def residues(saveNum, odevity, tFormat):
  #!! 19-TRIUMF2018, 20-RIKEN2018, 21-NEW_OTHER, 22-AME2016_MassExcess                            !!#
  #!!                                                                                             !!#
  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
- 
+
  fFormat = "pdf"          #figure format type when saving
  pMod = "global"          #plot mode "test" for testing, "global" or "local" for actual storing
  # pSave, save plot for 0-none; 1-S2n; 2-S2p; 3-S2n & S2p; 4-new nuclei (AME2016-2003); 5-contour; 6:all
@@ -1071,8 +1071,8 @@ def residues(saveNum, odevity, tFormat):
           plt.title(mtN[i])
           plt.text(125,17,"nuclei count: "+str(count) )
           #On the top right corner, print data points and chi-square
-          
-      
+
+
      plt.xticks(xx); plt.yticks(yy)
      #draw horizontal dashed line of 0 keV
      plt.axhline(y=0,linestyle='--',color='k')
@@ -1212,7 +1212,7 @@ def residues(saveNum, odevity, tFormat):
  #!! 19-TRIUMF2018, 20-RIKEN2018, 21-NEW_OTHER, 22-AME2016_MassExcess                            !!#
  #!!                                                                                             !!#
  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
- 
+
  # ContourD: dictionary for contour plotting
  # key is: (theory masstable index 'i'; exp. masstable index 'j'; datatype k; array content: l)
  # For l=0: array of neutron numbers, later to be used on x-axis; l=1: array of proton numbers, later to be used on y-axis, l=3: array of data, for now it's either S2n or S2p residual, depending on k, for pixel coloring
@@ -1351,7 +1351,7 @@ def residues(saveNum, odevity, tFormat):
      axes[ax_ind].axvline(x=126,ls='-',linewidth=1,c='#999999',alpha=0.5)
      axes[ax_ind].text(126, 7, '126', rotation=90)
      axes[ax_ind].set_title( mtN[i],pad=-20.0, fontsize = 15, fontname = "Times New Roman Bold" )
- 
+
   axes[(1,1)].set_xlabel("Neutron Number", fontsize = 18)
   plt.text(-345,140,"Proton Number", rotation = "vertical", fontsize = 18)
   cmap = mpl.cm.get_cmap('bwr')
@@ -1363,16 +1363,16 @@ def residues(saveNum, odevity, tFormat):
   cb.set_label(r'$S_{2n,exp}$ - $S_{2n,theory}$ (MeV)', fontsize = 18)
 
 
-  
+
   if gs_smooth:
    plt.suptitle("S2n Residuals vs "+mtN[j]+", Gaussian smoothing, $\sigma$=" + str(gs_sigma) + ", range="+ str(gs_range), fontsize = 20 )
    plt.savefig("plots/"+mtN[j]+"_6panels_smooth_s_" + str(gs_sigma) + "_r_"+ str(gs_range) +".pdf", format = "pdf")
   elif not gs_smooth:
    plt.suptitle("S2n Residuals vs "+mtN[j] + " raw data", fontsize = 20 )
    plt.savefig("plots/"+mtN[j]+"_6panels_raw_data.pdf", format = "pdf")
-  
-    
-    
+
+
+
 #     if not gs_smooth:
 #      plt.title("$S_{2n}$:  "+mtN[i]+" vs "+ mtN[j])
 #      fN = fN + "S2n/contour/" + mtN[i] + "_" + mtN[j] + "_S2n" + "." + fFormat
@@ -1743,11 +1743,11 @@ def residues(saveNum, odevity, tFormat):
       zS = 2; nS = 2; zOdd = 1; nOdd = 1;
       output = open("data/data_S2p_2018_all."+tFormat, "w")
   output.write(outputLabel)
-  
+
   points = {}
   for i in range(1,20):
     points[(mtN[i])] = 0
-  
+
   for Z in range(zS,zMax1+1,zOdd):
    for N in range(nS,nMax1+1,nOdd):
     outputStr = "\n" + str(Z) + "," + str(N) + ","
@@ -1793,7 +1793,7 @@ def residues(saveNum, odevity, tFormat):
  ###################################################################################################
  ###                           6. DRIPLINES & S2N AVAILABLE REGIONS                              ###
  ###################################################################################################
- # Label nuclei with S2n or S2p data in 2016 with 
+ # Label nuclei with S2n or S2p data in 2016 with
 
  ###################################################################################################
  ###                                      FUNCTION EXECUTION                                     ###
@@ -1809,6 +1809,6 @@ def residues(saveNum, odevity, tFormat):
  # Do saveNum = 4 / odevity = 0,1 ; S2p for even proton
 
 # uncomment to output csv file of separation energies
-#exec_list = [(1,1),(1,3),(2,0),(2,2),(3,2),(3,3),(4,0),(4,1)]
-#for (arg1,arg2) in exec_list: residues(arg1,arg2,"csv")
-residues(0,0,"csv")
+exec_list = [(1,1),(1,3),(2,0),(2,2),(3,2),(3,3),(4,0),(4,1)]
+for (arg1,arg2) in exec_list: residues(arg1,arg2,"csv")
+    #residues(0,0,"csv")
